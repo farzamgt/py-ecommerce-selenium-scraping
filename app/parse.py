@@ -17,7 +17,7 @@ class Product:
     description: str
     price: float
     rating: int
-    num_of_reviews: int
+    num_of_reviews: int  # Changed here to be consistent with the dataclass
 
 
 def setup_driver() -> webdriver.Chrome:
@@ -41,7 +41,6 @@ def get_all_products() -> None:
         ])
 
         for card in product_cards:
-            # Attempt to grab title from "title" attribute or text
             title_element = card.find_element("css selector", ".title")
             title = title_element.get_attribute(
                 "title"
@@ -63,15 +62,17 @@ def get_all_products() -> None:
             )
 
             try:
-                num_reviews = int(
+                num_of_reviews = int(
                     card.find_element(
                         "css selector", ".ratings > p.pull-right"
                     ).text.split()[0]
                 )
             except Exception:
-                num_reviews = 0
+                num_of_reviews = 0
 
-            writer.writerow([title, description, price, rating, num_reviews])
+            writer.writerow([
+                title, description, price, rating, num_of_reviews
+            ])
 
     driver.quit()
 
